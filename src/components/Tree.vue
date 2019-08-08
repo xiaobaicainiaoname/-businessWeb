@@ -44,6 +44,7 @@
       </div>
     </el-dialog>
 
+    <el-button @click="redirect()">重定向</el-button>
   </div>
 </template>
 
@@ -88,7 +89,7 @@ export default {
   methods: {
     queryTree () {
       let _this = this
-      axios.get('http://localhost:8084/tree/query', {
+      axios.get('http://test1.com:8084/tree/query', {
         params: {
           ID: 12345
         }
@@ -103,7 +104,6 @@ export default {
     },
     // 拖拉和修改使用同一接口
     updateTree (params) {
-      debugger
       let _this = this
       axios.put('http://localhost:8084/tree/modify', params)
         .then(function (response) {
@@ -154,6 +154,29 @@ export default {
           console.log(error)
         })
     },
+    redirect () {
+      // axios.interceptors.response.use(
+      //   response => {
+      //     console.log(response)
+      //     debugger
+      //   }
+      // )
+      // let _this = this  localhost
+      // document.cookie
+      axios.get('http://localhost:8084/tree/redirect', {
+        params: {
+          ID: 12345
+        }
+      })
+        .then(function (response) {
+          console.log(response)
+          // location.href = 'https://www.baidu.com/'
+          // _this.data = response.data
+        })
+        .catch(function (error) {
+          console.log(error)
+        })
+    },
     handleDragStart (node, ev) {
       console.log('drag start', node)
     },
@@ -170,7 +193,6 @@ export default {
       console.log('tree drag end: ', dropNode && dropNode.label, dropType)
     },
     handleDrop (draggingNode, dropNode, dropType, ev) { // 最后执行 拖拽成功完成时触发的事件
-      debugger
       // before、after、inner
       let params = {
         id: null, parentId: null, sort: null
